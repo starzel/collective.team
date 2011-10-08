@@ -5,13 +5,14 @@
     xmlns:grok="http://namespaces.zope.org/grok"
     i18n_domain="collective.team">
 
+  <grok:grok package="." />  
+  <includeDependencies package="." />
 
   <include package=".browser" />
   <include package=".behaviors" />
   <include package=".action" />
   <include package=".portlets" />
 
-  <grok:grok package="." />
 
   <genericsetup:registerProfile
       name="default"
@@ -36,6 +37,15 @@
       class=".conditions.WithinTeamArea"
       permission="zope2.View"
       />
+
+<!--
+  <browser:page
+      for="zope.component.interfaces.ISite"
+      name="within_intranet"
+      class=".conditions.WithinIntranet"
+      permission="zope2.View"
+      />
+-->
 
   <subscriber
       for=".behaviors.team.ITeam
