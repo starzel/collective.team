@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="collective.team">
+
+    <five:registerPackage package="." initialize=".initialize" />
+
+     <!-- Register the portlet -->
+
+     <plone:portlet
+         name="collective.team.portlets.TeamPortlet"
+         interface=".teamportlet.ITeamPortlet"
+         assignment=".teamportlet.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".teamportlet.Renderer"
+         addview=".teamportlet.AddForm"
+         editview=".teamportlet.EditForm"
+         />
+
+    <adapter factory='.indexes.getProjectMembers'
+     name='getProjectMembers'
+    />
+    
+    <adapter factory='.indexes.getProjectManagers'
+     name='getProjectManagers'
+    />
+    
+</configure>

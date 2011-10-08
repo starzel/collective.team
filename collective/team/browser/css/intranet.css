@@ -1,0 +1,17 @@
+.contentActions {
+    display: None;
+}
+
+#contentview-folderContents, #contentview-contentrules, #contentview-local_roles {
+    display: None;
+}
+
+.documentEditable #content {
+    border:None;
+}
+
+.contentViews {
+    border:None;
+    display: None;
+}
+

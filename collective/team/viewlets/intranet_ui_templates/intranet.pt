@@ -1,0 +1,60 @@
+<tal:snippet omit-tag="">
+  <ul class="intranet_actions">
+    <li class="ui-corner-all ui-state-default" tal:condition="viewlet/available/edit">
+      <a href="#" id="editview" class="ui-icon ui-icon-pencil" title="Seite bearbeiten" tal:attributes="href python: context.absolute_url() + '/edit'">Inhalte verwalten</a>
+    </li>
+    <li class="ui-corner-all ui-state-default" 
+        tal:condition="viewlet/available/manage_content">
+      <a href="#" 
+         id="listview" 
+         class="ui-icon ui-icon-folder-open" 
+         title="Inhalte verwalten"
+         tal:define="currentFolder context/@@plone/getCurrentFolder"
+         tal:attributes="href python:currentFolder.absolute_url() + '/folder_contents'">
+            Inhalte verwalten
+       </a>
+    </li>
+    <li class="ui-corner-all ui-state-default" tal:condition="viewlet/available/add_wizard">
+      <a href="#" id="addcontenticon" class="ui-icon ui-icon-plusthick" title="Inhalte hinzufügen" tal:attributes="href python: viewlet.team.absolute_url() + '/add_wizard'">Inhalte hinzufuegen</a>
+    </li>
+    <li class="ui-corner-all ui-state-default" tal:condition="viewlet/available/mail_to_member">
+      <a title="Mail mit Link verschicken" class="ui-icon ui-icon-mail-closed" id="send_document_button"></a>
+    </li>
+    <hr style="clear: both; border:0;margin:0" />
+  </ul> 
+  <form tal:condition="viewlet/available/mail_to_member" id="send_document" method="post" style="display: None;">
+    <p>
+    </p>
+    <p>
+      <label for="all">Alle benachrichtigen</label>
+      <input type="checkbox" name="all" />
+      <input 
+          tal:repeat="user viewlet/users"
+          tal:attributes="value user/email; name user/id"
+          type="hidden" class="all_users" name="#" value="#" />
+    </p>
+    <p>
+      <label for="user">oder eine/n benachrichtigen:</label>
+    </p>
+    <p id="user-input-fields">
+      <input type="text" id="user" />
+    </p>
+    <div>
+      <input type="hidden" name="document_title" value="#"
+             tal:attributes="value viewlet/context/title_or_id"
+             />
+      <input type="hidden" name="current_user" value="#"
+             tal:attributes="value python: context.portal_membership.getAuthenticatedMember().getUserName()"
+             />
+      <div id="no_user_selected" class="warning" style="display:none;">
+        Sie haben keinen Empfänger ausgewählt!
+      </div>
+      <input type="submit" name="submit" value=" Benachrichtigen " />
+    </div>
+  </form>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+    idea.send_document_init();
+    });
+  </script>
+</tal:snippet>

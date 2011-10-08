@@ -1,0 +1,51 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    i18n_domain="collective.team">
+
+  <include package=".browser" />
+  <include package=".behaviors" />
+  <include package=".action" />
+  <include package=".portlets" />
+
+  <grok:grok package="." />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.team"
+      directory="profiles/default"
+      description="Installs the collective.team package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <adapter factory=".localroles.LocalRoles" />
+
+  <browser:page
+      for="zope.component.interfaces.ISite"
+      name="within_team_not_manager"
+      class=".conditions.WithinTeamAreaAndNotManager"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="zope.component.interfaces.ISite"
+      name="within_team_area"
+      class=".conditions.WithinTeamArea"
+      permission="zope2.View"
+      />
+
+  <subscriber
+      for=".behaviors.team.ITeam
+           zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+      handler=".handlers.enable_addable_types"
+      />
+
+  <subscriber
+      for=".behaviors.team.ITeam
+           zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+      handler=".handlers.updateIndexedSecurity"
+      />
+
+</configure>

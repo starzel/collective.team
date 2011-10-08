@@ -1,0 +1,54 @@
+<dl class="portlet portletTeamPortlet"
+    i18n:domain="collective.team"    
+    tal:define="plone_view context/@@plone;
+                toLocalizedTime nocall:plone_view/toLocalizedTime;
+                getIcon nocall:plone_view/getIcon;">
+
+  <tal:block tal:define="project view/current_project" 
+             tal:condition="python:project">
+    <dt class="portletHeader"
+        tal:attributes="style string:background-color: ${project/project/color}">
+        <span class="portletTopLeft"></span>
+        <h4 tal:content="project/project/pretty_title_or_id">
+            Team Title
+        </h4>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:show tal:define="is_member_or_admin view/is_member_or_admin">
+      <dd class="portletItem" >
+        <div class="dynatree" id="dynatree_portlet" src="#" context="#"
+             tal:attributes="src string:${project/project/getURL}/jsonview;
+                             context context/nearest_folder">
+        </div>
+        <h4 class="my_projects"
+            tal:condition="view/projects">Meine SIGs</h4>
+        <ul class="my_projects"
+            tal:condition="view/projects">
+          <li tal:repeat="project view/projects">
+            <a href="#"
+               class="internal-link"
+               tal:attributes="href project/getURL;
+                               title project/Description">
+              <span tal:replace="project/pretty_title_or_id">
+                Title
+              </span>
+            </a>
+          </li>
+        </ul>
+        <script type="text/javascript">
+          jQuery(document).ready(function(){
+          idea.team_portlet_init();
+          });
+        </script>
+      </dd>
+    </tal:show>
+    <dd class="portletFooter">
+      <span class="portletBottomLeft"></span>
+      <span>
+        
+      </span>
+      <span class="portletBottomRight"></span>
+    </dd>
+  </tal:block>
+</dl>

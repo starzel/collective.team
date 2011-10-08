@@ -1,0 +1,34 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="collective.team">
+
+    <!-- A Content-Rules action -->
+    <include package="plone.contentrules" />
+    <include package="plone.contentrules" file="meta.zcml" />
+
+    <adapter factory=".mailnotify.MailNotifyActionExecutor" />
+
+    <browser:page
+      for="plone.app.contentrules.browser.interfaces.IRuleActionAdding"
+      name="plone.actions.MailNotifyAction"
+      class=".mailnotify.MailNotifyAddForm"
+      permission="cmf.ManagePortal"
+      />
+
+    <plone:ruleAction
+        name="plone.actions.MailNotifyAction"
+        title="Notify selected users"
+        description="Notify selected users."
+        for="*"
+        event="zope.component.interfaces.IObjectEvent"
+        addview="plone.actions.MailNotifyAction"
+        schema=".mailnotify.IMailNotifyAction"
+        factory=".mailnotify.MailNotifyAction"
+        />
+
+    <include package="plone.app.contentmenu" />
+
+</configure>

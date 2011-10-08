@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<portlets>
+
+ <!-- Portlet type registrations -->
+
+ <portlet
+   addview="collective.team.portlets.TeamPortlet"
+   title="Team Portlet"
+   description="A portlet showing information about Team"
+   />
+
+</portlets>

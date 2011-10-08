@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="collective.team">
+
+  <browser:resourceDirectory
+      name="collective.team.images"
+      directory="images"
+      />
+
+  <browser:resourceDirectory
+      name="collective.team.js"
+      directory="js"
+      />
+
+  <browser:resourceDirectory
+      name="collective.team.css"
+      directory="css"
+      />
+
+  <browser:page
+      for="*"
+      name="add_wizard"
+      class=".add_wizard.AddWizard"
+      template="templates/add_wizard.pt"
+      permission="zope2.View"
+      />
+  
+  <browser:page
+      for="..interfaces.IIntranetStartPage"
+      name="intranet_view"
+      class=".intranet.StartPage"
+      template="templates/startpage.pt"
+      permission="zope2.View"
+      />
+
+</configure>

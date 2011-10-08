@@ -1,0 +1,65 @@
+body.template-solgemafullcalendar_view #col3 {
+    width: 726px;
+}
+
+body.template-solgemafullcalendar_view #col2 {
+    display: none;
+}
+
+#portal-breadcrumbs {
+    display: block !important;
+    font-size: 90%;
+    line-height: 1.5em;
+    padding-bottom: 1em;
+}
+
+#breadcrumbs-home,
+#breadcrumbs-1 {
+    display: none;
+}
+
+/*
+ * Standard Plone-css for Tables (active only here because we have to check what it would do to the normal pages before activating)
+ */
+
+table.invisible td, table.invisible th, table.plain td, table.plain th, table.listing td, table.listing th {
+    padding: 0.5em 0.6em;
+}
+
+table.listing tbody tr td {
+    background: none repeat scroll 0 0 #fff;
+}
+
+table.listing tbody tr.odd td {
+    background: none repeat scroll 0 0 #EEEEEE;
+}
+
+table.listing td {
+    border-right: 1px solid #DDDDDD;
+}
+
+table.listing tbody tr {
+    text-align: left;
+}
+
+table.listing th {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border-color: #E7E7E7;
+    border-style: solid solid none;
+    border-width: 0.1em;
+    color: #666666;
+    text-align: left;
+}
+
+table.listing td.draggable {
+    background: none repeat scroll 0 0 #DDDDDD !important;
+    border-bottom: 1px solid white;
+    padding: 0.4em 0.4em 0 0.5em;
+    text-shadow: 1px 1px 1px White;
+}
+
+#content table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: left;
+}

@@ -1,0 +1,203 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <h1 class="documentFirstHeading" tal:content="context/title" />
+        
+        <div class="discreet">
+        </div>
+
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+        <div class="main_content">
+          <div class="float_left portletPseudo">
+            <div class="pseudoPortletHeader">
+                <h4>Neueste Dokumente</h4>
+            </div>
+            <div class="pseudoPortletBody">
+                <p class="result"
+                    tal:condition="not:view/latest_docs">
+                    Noch keine Inhalte
+                </p>
+                <p class="result" 
+                     tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                 plone_view context/@@plone;
+                                 getIcon nocall:plone_view/getIcon;"
+                     tal:repeat="obj view/latest_docs">
+                    <a href="#" 
+                       tal:attributes="href string:${obj/getURL}/view;
+                                       title obj/Description;"
+                       tal:define="item_icon python:getIcon(obj);">
+                        <img tal:replace="structure item_icon/html_tag" />
+                        <tal:title content="obj/pretty_title_or_id">
+                            Title
+                        </tal:title>
+                    </a> 
+                    <span class="documentByLine">zuletzt verändert: <span tal:replace="python:toLocalizedTime(obj.ModificationDate)" /></span>
+                </p>
+            </div>
+            <div class="pseudoPortletFooter"></div>
+          </div>
+
+          <div class="float_right portletPseudo">
+            <div class="pseudoPortletHeader">
+                <h4>
+                    <a href="#"
+                        tal:attributes="href string:${context/absolute_url}/termine">
+                            Termine
+                    </a>
+                </h4>
+            </div>
+            <div class="pseudoPortletBody">
+                <p class="result"
+                    tal:condition="not:view/next_events">
+                    Keine künftigen Termine                    
+                </p>
+                <p class="result" 
+                     tal:define="plone_view context/@@plone;
+                                 getIcon nocall:plone_view/getIcon;"
+                     tal:repeat="obj view/next_events">
+                    <tal:dates tal:define="item_startdate python:toLocalizedTime(obj.start);
+                                   item_starttime python:toLocalizedTime(obj.start,time_only=1);
+                                   item_enddate python:toLocalizedTime(obj.end);
+                                   item_endtime python:toLocalizedTime(obj.end,time_only=1);
+                                   item_sametime python: obj.start == obj.end;
+                                   item_samedate python: obj.end - obj.start &lt; 1">
+                        <a href="#" 
+                           tal:attributes="href string:${obj/getURL}/view;
+                                           title obj/Description;"
+                           tal:define="item_icon python:getIcon(obj);">
+                            <img tal:replace="structure item_icon/html_tag" />
+                            <tal:title content="obj/pretty_title_or_id">
+                                Title
+                            </tal:title>
+                        </a> 
+                        <span class="documentByLine">
+                            <span
+                             tal:condition="python: item_sametime"
+                             tal:content="string:${item_startdate} ${item_starttime}">
+                            May 5
+                            </span>
+                            <span
+                             tal:condition="python: item_samedate and not item_sametime"
+                             tal:content="string:${item_startdate} ${item_starttime} - ${item_endtime}">
+                            May 5
+                            </span>
+                            <span
+                             tal:condition="python: not item_sametime and not item_samedate"
+                             tal:content="string:${item_startdate} - ${item_enddate}">
+                            May 5
+                            </span>
+                            <span tal:condition="obj/location"> &mdash;
+                                <tal:location content="obj/location">Location</tal:location>
+                            </span>
+                        </span>
+                    </tal:dates>                    
+                </p>
+            </div>
+            <div class="pseudoPortletFooter">
+                <a href="#"
+                    tal:attributes="href string:${context/absolute_url}/termine/createObject?type_name=Event"
+                    tal:condition="python:checkPermission('Add portal content', context)"
+                    class="left">
+                    Termin eintragen</a>
+                <a href tal:attributes="href string:${context/absolute_url}/termine/"
+                    class="right">Zum Kalender</a>
+            </div>
+          </div>
+
+
+          <div style="clear:both;" ></div>
+
+
+          <div class="float_left portletPseudo">
+            <div class="pseudoPortletHeader">
+                <h4>Mitglieder</h4>
+            </div>
+            <div class="pseudoPortletBody" tal:define="project view/project_members">
+
+              <h4>Administratoren</h4>
+              <ul>
+                <li class="result" tal:condition="not:project/admins">
+                    <a href="mailto:redaktion@idea-frankfurt.eu">
+                        <tal:block replace="structure context/portal_url/group.png"/>
+                        IDeA-Redaktion
+                    </a>
+                </li>
+                <li class="result" tal:repeat="doc project/admins">
+                  <a href="#"
+                     tal:attributes="href python: 'mailto: ' + doc['email']"
+                     tal:define="icon doc/membertype">
+                      <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+                      <span omit-tag=""  tal:content="doc/username"></span>
+                  </a>
+                </li>
+              </ul>
+              <h4 tal:condition="project/members">Mitglieder</h4>
+              <ul>
+                <li class="result" tal:repeat="doc project/members">
+                  <a href="#"
+                     tal:attributes="href python: 'mailto: ' + doc['email']"
+                     tal:define="icon doc/membertype">
+                      <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+                      <span omit-tag=""  tal:content="doc/username"></span>
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+            <div class="pseudoPortletFooter"></div>
+          </div>
+
+          <div class="float_right portletPseudo">
+            <div class="pseudoPortletHeader">
+                <h4>Hilfe</h4>
+            </div>
+            <div class="pseudoPortletBody">
+                <p class="result"
+                    tal:condition="not:view/help">
+                    Noch keine Hilfetexte                    
+                </p>
+                <p class="result" 
+                     tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                 plone_view context/@@plone;
+                                 getIcon nocall:plone_view/getIcon;"
+                     tal:repeat="obj view/help">
+                    <a href="#" 
+                       tal:attributes="href string:${obj/getURL}/view;
+                                       title obj/Description;"
+                       tal:define="item_icon python:getIcon(obj);">
+                        <img tal:replace="structure item_icon/html_tag" />
+                        <tal:title content="obj/pretty_title_or_id">
+                            Title
+                        </tal:title>
+                    </a> 
+                </p>
+            </div>
+            <div class="pseudoPortletFooter"></div>
+          </div>
+          <div style="clear:both;" ></div>
+
+        </div>
+
+
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
