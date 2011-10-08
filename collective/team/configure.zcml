@@ -5,6 +5,7 @@
     xmlns:grok="http://namespaces.zope.org/grok"
     i18n_domain="collective.team">
 
+
   <include package=".browser" />
   <include package=".behaviors" />
   <include package=".action" />

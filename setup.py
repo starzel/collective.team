@@ -25,6 +25,8 @@ setup(name='collective.team',
       zip_safe=False,
       install_requires=[
         'setuptools',
+        'five.grok',
+        'plone.app.dexterity [grok]',
         'AccessControl',
         'Products.CMFCore',
         'Zope2',
@@ -36,6 +38,7 @@ setup(name='collective.team',
         'rwproperty',
         'zope.interface',
         'zope.site',
+        'z3c.autoinclude',
       ],
       entry_points="""
       # -*- Entry points: -*-

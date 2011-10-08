@@ -11,13 +11,6 @@
  <stylesheet title="" applyPrefix="False" authenticated="False"
     cacheable="True" compression="safe" conditionalcomment="" cookable="True"
     enabled="on"
-    expression="portal/within_intranet"
-    id="++resource++collective.team.css/within_intranet.css" media="" rel="stylesheet"
-    rendering="import"/>
-
- <stylesheet title="" applyPrefix="False" authenticated="False"
-    cacheable="True" compression="safe" conditionalcomment="" cookable="True"
-    enabled="on"
     expression="portal/within_team_area"
     id="++resource++collective.team.css/team_area.css" media="" rel="stylesheet"
     rendering="import"/>
