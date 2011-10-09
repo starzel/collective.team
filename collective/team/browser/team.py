@@ -46,7 +46,6 @@ class View(grok.View):
             sort_limit=3,)[:3]
         return next_events
 
-
     def team_members(self):
             sort_by_fullname = lambda x: x['username']
             admins = filter(lambda x:x, map(self.get_member_data, self.context.managers))
@@ -54,7 +53,7 @@ class View(grok.View):
             members = filter(lambda x:x, map(self.get_member_data, self.context.members))
             members.sort(key=sort_by_fullname)
             team_members =  {'admins' : admins,
-                                'members' : members,}
+                    'members' : members,}
             return team_members
 
     def get_member_data(self, userid):

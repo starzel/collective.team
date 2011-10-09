@@ -28,13 +28,6 @@
 
   <browser:page
       for="zope.component.interfaces.ISite"
-      name="within_team_not_manager"
-      class=".conditions.WithinTeamAreaAndNotManager"
-      permission="zope2.View"
-      />
-
-  <browser:page
-      for="zope.component.interfaces.ISite"
       name="within_team_area"
       class=".conditions.WithinTeamArea"
       permission="zope2.View"

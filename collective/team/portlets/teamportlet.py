@@ -115,6 +115,8 @@ class Renderer(base.Renderer):
 
     @memoize
     def current_team(self):
+        """ return usefull info about the team we are in
+        """
         for team in self.request.PARENTS:
             if ITeam.providedBy(team):
                 sort_by_fullname = lambda x: x['username']
@@ -134,6 +136,8 @@ class Renderer(base.Renderer):
         return None
    
     def get_member_data(self, userid):
+        """ collect usefull info the members of a team
+        """
         acl_users = getToolByName(self.context, 'acl_users')
         member = acl_users.getUserById(userid)
         group = acl_users.getGroupById(userid)
