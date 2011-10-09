@@ -31,10 +31,16 @@
         <li class="result" tal:repeat="admin admins">
           <a href="#"
              tal:attributes="href python: 'mailto: ' + admin['email']"
-             tal:define="icon admin/membertype">
+             tal:define="icon admin/membertype"
+             tal:condition="admin/email">
               <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
               <span omit-tag=""  tal:content="admin/username"></span>
           </a>
+          <span tal:define="icon admin/membertype"
+             tal:condition="not: admin/email">
+              <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+              <span omit-tag=""  tal:content="admin/username"></span>
+          </span>
         </li>
       </ul>
       <h4 tal:condition="members"
@@ -45,10 +51,16 @@
         <li class="result" tal:repeat="member members">
           <a href="#"
              tal:attributes="href python: 'mailto: ' + member['email']"
-             tal:define="icon member/membertype">
+             tal:define="icon member/membertype"
+             tal:condition="member/email">
               <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
               <span omit-tag=""  tal:content="member/username"></span>
           </a>
+          <span tal:define="icon member/membertype"
+             tal:condition="not: member/email">
+              <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+              <span omit-tag=""  tal:content="member/username"></span>
+          </span>
         </li>
       </ul>
       </tal:members>
