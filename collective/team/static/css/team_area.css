@@ -48,7 +48,7 @@ body.portaltype-team #plone-document-byline {
 }
 
 .pseudo_portlet_manager span.ui-icon{
-    background-image: url("/++resource++collective.requirejs.css/ui-lightness/images/ui-icons_ffffff_256x240.png");
+    background-image: url("/++resource++collective.requirejs/css/ui-lightness/images/ui-icons_ffffff_256x240.png");
     float: right;
     margin-right: 12px;
 }
@@ -161,7 +161,7 @@ body.template-solgemafullcalendar_view .intranet_actions {
 
 .tooltip {
     display:none;
-    background:transparent url(/++resource++collective.team.images/black_arrow.png);
+    background:transparent url(/++resource++collective.team/images/black_arrow.png);
     font-size:12px;
     height:70px;
     width:160px;
@@ -254,7 +254,7 @@ body.portaltype-team .formTabs {
 
 #naviList ul.navTreeLevel2 li a.navTreeItemInPath {
     font-weight: bold;
-    background-image: url("++resource++collective.team.images/wissen_btn_navi_arrow_white.gif");
+    background-image: url("++resource++collective.team/images/wissen_btn_navi_arrow_white.gif");
     background-position: 14px center;
     background-repeat: no-repeat;
     color: #FFFFFF;

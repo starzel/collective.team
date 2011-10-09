@@ -1,23 +1,15 @@
 <?xml version="1.0"?>
 <object name="portal_css" meta_type="Stylesheets Registry">
-
  <stylesheet title="" applyPrefix="False" authenticated="False"
     cacheable="True" compression="safe" conditionalcomment="" cookable="True"
     enabled="on"
     expression="portal/within_team_not_manager"
-    id="++resource++collective.team.css/intranet.css" media="" rel="stylesheet"
+    id="++resource++collective.team/css/team.css" media="" rel="stylesheet"
     rendering="import"/>
-
  <stylesheet title="" applyPrefix="False" authenticated="False"
     cacheable="True" compression="safe" conditionalcomment="" cookable="True"
     enabled="on"
     expression="portal/within_team_area"
-    id="++resource++collective.team.css/team_area.css" media="" rel="stylesheet"
+    id="++resource++collective.team/css/team_area.css" media="" rel="stylesheet"
     rendering="import"/>
-
- <stylesheet title="" applyPrefix="True" authenticated="False" cacheable="True" 
-     compression="safe" conditionalcomment="" cookable="True" enabled="True" 
-     expression="" id="++resource++collective.requirejs.css/dynatree-skin/ui.dynatree.css" 
-     media="" rel="stylesheet" rendering="import"/>
-
 </object>
