@@ -52,9 +52,4 @@
       <input type="submit" name="submit" value=" Benachrichtigen " />
     </div>
   </form>
-  <script type="text/javascript">
-    jQuery(document).ready(function(){
-    team.send_document_init();
-    });
-  </script>
 </tal:snippet>
