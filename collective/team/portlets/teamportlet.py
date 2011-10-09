@@ -4,7 +4,7 @@ from zope.formlib import form
 from zope.interface import implements
 
 from Acquisition import aq_inner
-
+from AccessControl import getSecurityManager
 from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
 from plone.memoize.compress import xhtml_compress
@@ -12,30 +12,24 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.cache import render_cachekey
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore import permissions
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from collective.team.behaviors.team import ITeam
 
 class ITeamPortlet(IPortletDataProvider):
     """A portlet showing information on teams
     """
-    limit = schema.Int(
-                title=_(u"Limit"),
-                description=_(u"Specify the maximum number of items to show in the portlet. "
-                                "Leave this blank to show all items."),
-                default=None,
-                required=False
-                )
-
     sort_on = schema.Choice(
                 title=_(u"Sort on criteria"),
                 description=_(u"Choose the criteria on which to sort the items."),
                 required=True,
-
-
+                default = 'sortable_title',
                 vocabulary=schema.vocabulary.SimpleVocabulary(
                         (schema.vocabulary.SimpleTerm(
-                                                    'name',
-                                                    title=_(u'Name'),
+                                                    'sortable_title',
+                                                    title=_(u'Title'),
                                                     ),
                             schema.vocabulary.SimpleTerm(
                                                     'created',
@@ -45,7 +39,7 @@ class ITeamPortlet(IPortletDataProvider):
                                                     'modified',
                                                     title=_(u'Modification Date'),
                                                     ),
-                        )
+                        ),
                     ),
                 )
 
@@ -53,15 +47,10 @@ class ITeamPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     """Portlet assignment.
     """
-
     implements(ITeamPortlet)
-
-    limit = None
-    show_dates = False
-    sort_on = None
-
-    def __init__(self, limit=None, sort_on=None, show_dates=False):
-        self.limit = limit
+    
+    sort_on = 'sortable_title'
+    def __init__(self, sort_on='sortable_title'):
         self.sort_on = sort_on
 
     @property
@@ -80,11 +69,6 @@ class Renderer(base.Renderer):
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
         context = aq_inner(self.context)
-        nearest_folder = context
-        while getattr(nearest_folder, 'portal_type', None) not in\
-                ['team', 'Folder']:
-            nearest_folder = nearest_folder.__parent__
-        self.nearest_folder = "/".join(nearest_folder.getPhysicalPath())
         self.portal_state = getMultiAdapter(
                             (context, self.request),
                             name=u'plone_portal_state'
@@ -102,83 +86,79 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
-        return True
+        has_teams = self.get_teams_for_current_member()
+        in_team = self.current_team()
+        return has_teams or in_team  
 
     @memoize
     def get_teams_for_current_member(self):
-        limit = self.data.limit
+        sort_on = self.data.sort_on
         member = self.portal_state.member()
         member_id = member.getId()
         brains = []
+        rids = []
         for index in  ['getTeamMembers', 'getTeamManagers']:
             query = {
                 'portal_type':          'team',
-                'sort_on':              'modified',
+                'sort_on':              sort_on,
                 'sort_order':           'reverse',
-                'sort_limit':           limit,
                 index:                  member_id,
-            }
-            brains += self.catalog(query)
+                }
+            for brain in self.catalog(query):
+                rid = brain.getRID()
+                if rid in rids:
+                    continue
+                rids.append(rid)
+                brains.append(brain)
         return brains
 
-    def is_admin(self):
-        member = self.portal_state.member()
-        return member.has_role('Manager')
-
-    def is_member_or_admin(self):
-        if self.is_admin:
-            return True
-        # TODO: Check for membership in groups
-        return member.getProperty('fullname') in self.context.members + self.context.managers
-
+    @memoize
     def current_team(self):
-        team = self.get_current_team()
-        if team:
-            return dict(team = team,
-                        managers = self.team_managers(team),
-                        members = self.team_members(team),
-                        )
-        else:
-            return False
-    
-    def get_current_team(self):
-        brains = []
-        current_path = self.context.getPhysicalPath()
-        
-        while len(current_path)>1:
-            path = '/'.join(current_path)
-            query = {
-                'portal_type': 'team',
-                'path':        dict(query=path,depth=0),
-                }
-            brains = self.catalog(query)
-            if len(brains) == 1:
-                return brains[0]
-            else:
-                current_path = current_path[:-1]
-        return False
-    
-    def team_members(self, team):
-        """ returns useful data from members
-        """
-        members = team.getTeamMembers
-        if members:
-            for member_id in members:
-                member = self.mtool.getMemberById(member_id) 
-                if member:
-                    yield dict(name = str(member.getProperty('fullname', '')),
-                               email = str(member.getProperty('email', '')),)
+        for team in self.request.PARENTS:
+            if ITeam.providedBy(team):
+                sort_by_fullname = lambda x: x['username']
+                admins = filter(lambda x:x, map(self.get_member_data, team.managers))
+                admins.sort(key=sort_by_fullname)
+                members = filter(lambda x:x, map(self.get_member_data, team.members))
+                members.sort(key=sort_by_fullname)
+                is_member = self.member_is_team_member(team)
+                team =  {'title': team.title,
+                        'description' : team.description,
+                        'path' : team.absolute_url(),
+                        'admins' : admins,
+                        'members' : members,
+                        'is_member' : is_member,
+                        'results': []}
+                return team
+        return None
+   
+    def get_member_data(self, userid):
+        acl_users = getToolByName(self.context, 'acl_users')
+        member = acl_users.getUserById(userid)
+        group = acl_users.getGroupById(userid)
+        if member:
+            username = member.getProperty("fullname") or member.getUserName()
+            email = member.getProperty("email")
+            membertype = 'user'
+        if group:
+            username = group.getGroupName()
+            email = group.getProperty("email")
+            membertype = 'group'
+        if not group and not member:
+            return member
+        return dict(username=username, email=email, membertype=membertype)
 
-    def team_managers(self, team):
-        """ returns useful data from managers
-        """
-        managers = team.getTeamManagers
-        if managers:
-            for member_id in managers:
-                member = self.mtool.getMemberById(member_id)
-                if member:
-                    yield dict(name = str(member.getProperty('fullname', '')),
-                               email = str(member.getProperty('email', '')),)
+    def member_is_team_member(self, team):
+        if not self.mtool.isAnonymousUser():
+            gtool = getToolByName(self.context, 'portal_groups')
+            member = self.mtool.getAuthenticatedMember()
+            member_id = member.getId()
+            member_ids = [group.id for group in gtool.getGroupsByUserId(member_id)] 
+            member_ids.append(member_id)
+            if set(member_ids).intersection((team.members + team.managers)):
+                return True
+        return False
+
 
 class AddForm(base.AddForm):
     """Portlet add form.

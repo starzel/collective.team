@@ -4,20 +4,61 @@
                 toLocalizedTime nocall:plone_view/toLocalizedTime;
                 getIcon nocall:plone_view/getIcon;">
 
-  <tal:block tal:define="team view/current_team" 
-             tal:condition="python:team">
+  <tal:block tal:define="current_team view/current_team">
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <h4 tal:content="team/team/pretty_title_or_id">
+        <h4 tal:condition="current_team"
+            tal:content="current_team/title">
             Team Title
+        </h4>
+        <h4 tal:condition="not:current_team">
+            My Teams
         </h4>
         <span class="portletTopRight"></span>
     </dt>
 
-      <dd class="portletItem" 
-          tal:condition="view/get_teams_for_current_member">
-        <h4 class="my_teams" i18n:translate="">My teams</h4>
+    <dd class="portletItem" 
+        tal:condition="current_team">
+      <tal:members tal:define="members current_team/members;
+                admins current_team/admins">
+
+      <h4 tal:condition="admins"
+          i18n:translate="">
+          Administrators
+      </h4>
+      <ul>
+        <li class="result" tal:repeat="admin admins">
+          <a href="#"
+             tal:attributes="href python: 'mailto: ' + admin['email']"
+             tal:define="icon admin/membertype">
+              <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+              <span omit-tag=""  tal:content="admin/username"></span>
+          </a>
+        </li>
+      </ul>
+      <h4 tal:condition="members"
+          i18n:translate="">
+          Members
+      </h4>
+      <ul>
+        <li class="result" tal:repeat="member members">
+          <a href="#"
+             tal:attributes="href python: 'mailto: ' + member['email']"
+             tal:define="icon member/membertype">
+              <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+              <span omit-tag=""  tal:content="member/username"></span>
+          </a>
+        </li>
+      </ul>
+      </tal:members>
+    </dd>
+    
+    <dd class="portletItem" 
+        tal:condition="view/get_teams_for_current_member">
+        <h4 class="my_teams" 
+            i18n:translate="" 
+            tal:condition="current_team">My teams</h4>
         <ul class="my_teams">
           <li tal:repeat="team view/get_teams_for_current_member">
             <a href="#"
@@ -30,7 +71,7 @@
             </a>
           </li>
         </ul>
-      </dd>
+    </dd>
 
     <dd class="portletFooter">
       <span class="portletBottomLeft"></span>

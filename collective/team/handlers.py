@@ -2,7 +2,6 @@ from Acquisition import aq_base
 from zope.interface import implements
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
-from collective.team.behaviors.team import ITeam
 
 def _get_role_permission_for_fti(context, fti):
     """Helper method to get hold of a RolePermission for a given FTI.
