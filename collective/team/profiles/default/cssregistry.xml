@@ -3,13 +3,7 @@
  <stylesheet title="" applyPrefix="False" authenticated="False"
     cacheable="True" compression="safe" conditionalcomment="" cookable="True"
     enabled="on"
-    expression="portal/within_team_not_manager"
-    id="++resource++collective.team/css/team.css" media="" rel="stylesheet"
-    rendering="import"/>
- <stylesheet title="" applyPrefix="False" authenticated="False"
-    cacheable="True" compression="safe" conditionalcomment="" cookable="True"
-    enabled="on"
     expression="portal/within_team_area"
-    id="++resource++collective.team/css/team_area.css" media="" rel="stylesheet"
+    id="++resource++collective.team/css/team.css" media="" rel="stylesheet"
     rendering="import"/>
 </object>
