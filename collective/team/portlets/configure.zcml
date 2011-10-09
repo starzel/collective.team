@@ -20,12 +20,12 @@
          editview=".teamportlet.EditForm"
          />
 
-    <adapter factory='.indexes.getProjectMembers'
-     name='getProjectMembers'
+    <adapter factory='.indexes.getTeamMembers'
+     name='getTeamMembers'
     />
     
-    <adapter factory='.indexes.getProjectManagers'
-     name='getProjectManagers'
+    <adapter factory='.indexes.getTeamManagers'
+     name='getTeamManagers'
     />
     
 </configure>

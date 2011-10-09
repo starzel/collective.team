@@ -4,45 +4,33 @@
                 toLocalizedTime nocall:plone_view/toLocalizedTime;
                 getIcon nocall:plone_view/getIcon;">
 
-  <tal:block tal:define="project view/current_project" 
-             tal:condition="python:project">
+  <tal:block tal:define="team view/current_team" 
+             tal:condition="python:team">
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <h4 tal:content="project/project/pretty_title_or_id">
+        <h4 tal:content="team/team/pretty_title_or_id">
             Team Title
         </h4>
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:show tal:define="is_member_or_admin view/is_member_or_admin">
-      <dd class="portletItem" >
-        <div class="dynatree" id="dynatree_portlet" src="#" context="#"
-             tal:attributes="src string:${project/project/getURL}/jsonview;
-                             context context/nearest_folder">
-        </div>
-        <tal:teams condition="view/get_teams_for_current_member">
-            <h4 class="my_teams" i18n:translate="">My teams</h4>
-            <ul class="my_teams">
-              <li tal:repeat="team view/get_teams_for_current_member">
-                <a href="#"
-                   class="internal-link"
-                   tal:attributes="href project/getURL;
-                                   title project/Description">
-                  <span tal:replace="project/pretty_title_or_id">
-                    Title
-                  </span>
-                </a>
-              </li>
-            </ul>
-        </tal:projects>
-        <script type="text/javascript">
-          jQuery(document).ready(function(){
-          team.team_portlet_init();
-          });
-        </script>
+      <dd class="portletItem" 
+          tal:condition="view/get_teams_for_current_member">
+        <h4 class="my_teams" i18n:translate="">My teams</h4>
+        <ul class="my_teams">
+          <li tal:repeat="team view/get_teams_for_current_member">
+            <a href="#"
+               class="internal-link"
+               tal:attributes="href team/getURL;
+                               title team/Description">
+              <span tal:replace="team/pretty_title_or_id">
+                Title
+              </span>
+            </a>
+          </li>
+        </ul>
       </dd>
-    </tal:show>
 
     <dd class="portletFooter">
       <span class="portletBottomLeft"></span>

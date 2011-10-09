@@ -105,12 +105,12 @@ class Renderer(base.Renderer):
         return True
 
     @memoize
-    def get_projects_for_current_member(self):
+    def get_teams_for_current_member(self):
         limit = self.data.limit
         member = self.portal_state.member()
         member_id = member.getId()
         brains = []
-        for index in  ['getProjectMembers', 'getProjectManagers']:
+        for index in  ['getTeamMembers', 'getTeamManagers']:
             query = {
                 'portal_type':          'team',
                 'sort_on':              'modified',
@@ -131,17 +131,17 @@ class Renderer(base.Renderer):
         # TODO: Check for membership in groups
         return member.getProperty('fullname') in self.context.members + self.context.managers
 
-    def current_project(self):
-        project = self.get_current_project()
-        if project:
-            return dict(project = project,
-                        managers = self.project_managers(project),
-                        members = self.project_members(project),
+    def current_team(self):
+        team = self.get_current_team()
+        if team:
+            return dict(team = team,
+                        managers = self.team_managers(team),
+                        members = self.team_members(team),
                         )
         else:
             return False
     
-    def get_current_project(self):
+    def get_current_team(self):
         brains = []
         current_path = self.context.getPhysicalPath()
         
@@ -158,10 +158,10 @@ class Renderer(base.Renderer):
                 current_path = current_path[:-1]
         return False
     
-    def project_members(self, project):
+    def team_members(self, team):
         """ returns useful data from members
         """
-        members = project.getProjectMembers
+        members = team.getTeamMembers
         if members:
             for member_id in members:
                 member = self.mtool.getMemberById(member_id) 
@@ -169,10 +169,10 @@ class Renderer(base.Renderer):
                     yield dict(name = str(member.getProperty('fullname', '')),
                                email = str(member.getProperty('email', '')),)
 
-    def project_managers(self, project):
+    def team_managers(self, team):
         """ returns useful data from managers
         """
-        managers = project.getProjectManagers
+        managers = team.getTeamManagers
         if managers:
             for member_id in managers:
                 member = self.mtool.getMemberById(member_id)
@@ -185,7 +185,7 @@ class AddForm(base.AddForm):
     """
     form_fields = form.Fields(ITeamPortlet)
     label = _(u"Add Team Portlet")
-    description = _(u"This portlet displays your projects.")
+    description = _(u"This portlet displays your teams.")
 
     def create(self, data):
         return Assignment(**data)
@@ -196,4 +196,4 @@ class EditForm(base.EditForm):
     """
     form_fields = form.Fields(ITeamPortlet)
     label = _(u"Edit Team Portlet")
-    description = _(u"This portlet displays your projects.")
+    description = _(u"This portlet displays your teams.")

@@ -124,17 +124,17 @@
             <div class="pseudoPortletHeader">
                 <h4>Mitglieder</h4>
             </div>
-            <div class="pseudoPortletBody" tal:define="project view/project_members">
+            <div class="pseudoPortletBody" tal:define="team view/team_members">
 
               <h4>Administratoren</h4>
               <ul>
-                <li class="result" tal:condition="not:project/admins">
+                <li class="result" tal:condition="not:team/admins">
                     <a href="mailto:redaktion@idea-frankfurt.eu">
                         <tal:block replace="structure context/portal_url/group.png"/>
                         IDeA-Redaktion
                     </a>
                 </li>
-                <li class="result" tal:repeat="doc project/admins">
+                <li class="result" tal:repeat="doc team/admins">
                   <a href="#"
                      tal:attributes="href python: 'mailto: ' + doc['email']"
                      tal:define="icon doc/membertype">
@@ -143,9 +143,9 @@
                   </a>
                 </li>
               </ul>
-              <h4 tal:condition="project/members">Mitglieder</h4>
+              <h4 tal:condition="team/members">Mitglieder</h4>
               <ul>
-                <li class="result" tal:repeat="doc project/members">
+                <li class="result" tal:repeat="doc team/members">
                   <a href="#"
                      tal:attributes="href python: 'mailto: ' + doc['email']"
                      tal:define="icon doc/membertype">

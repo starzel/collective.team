@@ -84,15 +84,15 @@ class View(grok.View):
             sort_limit=3,)[:3]
         return next_events
 
-    def project_members(self):
+    def team_members(self):
             sort_by_fullname = lambda x: x['username']
             admins = filter(lambda x:x, map(self.get_member_data, self.context.managers))
             admins.sort(key=sort_by_fullname)
             members = filter(lambda x:x, map(self.get_member_data, self.context.members))
             members.sort(key=sort_by_fullname)
-            project_members =  {'admins' : admins,
+            team_members =  {'admins' : admins,
                                 'members' : members,}
-            return project_members
+            return team_members
 
     def get_member_data(self, userid):
         member = self.site.acl_users.getUserById(userid)

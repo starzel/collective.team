@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <object name="portal_catalog" meta_type="Plone Catalog Tool">
 
-    <index name="getProjectMembers" 
+    <index name="getTeamMembers" 
             meta_type="KeywordIndex">
         <indexed_attr value="members"/>
     </index>
-    <column value="getProjectMembers"/>
+    <column value="getTeamMembers"/>
 
-    <index name="getProjectManagers" 
+    <index name="getTeamManagers" 
             meta_type="KeywordIndex">
         <indexed_attr value="managers"/>
     </index>
-    <column value="getProjectManagers"/>
+    <column value="getTeamManagers"/>
 
 </object>

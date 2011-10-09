@@ -5,7 +5,7 @@ from borg.localrole.interfaces import ILocalRoleProvider
 from collective.team.behaviors.team import ITeam
 
 class LocalRoles(object):
-    """Provide a local role manager for projects
+    """Provide a local role manager for teams
     """
     implements(ILocalRoleProvider)
     adapts(ITeam)
