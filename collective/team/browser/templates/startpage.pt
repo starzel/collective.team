@@ -69,7 +69,7 @@
         </div>
         <script type="text/javascript">
           jQuery(document).ready(function(){
-              idea.startpage_init();
+              team.startpage_init();
           });
         </script>
       </tal:main-macro>

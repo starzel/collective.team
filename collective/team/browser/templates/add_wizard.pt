@@ -24,7 +24,7 @@
       </div>
       <script type="text/javascript">
         jQuery(document).ready(function(){
-            idea.add_wizard_init();
+            team.add_wizard_init();
         });
       </script>                                                                                                
     </div>
