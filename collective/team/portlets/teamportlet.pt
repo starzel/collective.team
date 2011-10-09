@@ -12,7 +12,8 @@
             tal:content="current_team/title">
             Team Title
         </h4>
-        <h4 tal:condition="not:current_team">
+        <h4 tal:condition="not:current_team"
+            i18n:translate="">
             My Teams
         </h4>
         <span class="portletTopRight"></span>
@@ -70,7 +71,7 @@
         tal:condition="view/get_teams_for_current_member">
         <h4 class="my_teams" 
             i18n:translate="" 
-            tal:condition="current_team">My teams</h4>
+            tal:condition="current_team">My Teams</h4>
         <ul class="my_teams">
           <li tal:repeat="team view/get_teams_for_current_member">
             <a href="#"

@@ -1,0 +1,48 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2011-10-09 16:28+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.team\n"
+
+#: ./portlets/teamportlet.py:168
+msgid "Add Team Portlet"
+msgstr ""
+
+#: ./portlets/teamportlet.pt:27
+msgid "Administrators"
+msgstr ""
+
+#: ./portlets/teamportlet.py:179
+msgid "Edit Team Portlet"
+msgstr ""
+
+#: ./behaviors/team.py:25
+msgid "Managers"
+msgstr ""
+
+#: ./behaviors/team.py:17
+#: ./portlets/teamportlet.pt:47
+msgid "Members"
+msgstr ""
+
+#: ./portlets/teamportlet.pt:15
+msgid "My Teams"
+msgstr ""
+
+#: ./portlets/teamportlet.py:169
+msgid "This portlet displays your teams."
+msgstr ""
+

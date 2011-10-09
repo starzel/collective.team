@@ -2,7 +2,7 @@
 <object name="team" meta_type="Dexterity FTI"
   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title">Team</property>
- <property name="description">None</property>
+ <property name="description">A folder with local managers and members</property>
  <property name="icon_expr">string:${portal_url}/group.png</property>
  <property name="factory">team</property>
  <property name="link_target"></property>

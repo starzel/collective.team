@@ -13,31 +13,32 @@ from plone.app.portlets.cache import render_cachekey
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions
-from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory as PMF
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from collective.team.behaviors.team import ITeam
+from collective.team import TeamMessageFactory as _
 
 class ITeamPortlet(IPortletDataProvider):
     """A portlet showing information on teams
     """
     sort_on = schema.Choice(
-                title=_(u"Sort on criteria"),
-                description=_(u"Choose the criteria on which to sort the items."),
+                title=PMF(u"Sort on criteria"),
+                description=PMF(u"Choose the criteria on which to sort the items."),
                 required=True,
                 default = 'sortable_title',
                 vocabulary=schema.vocabulary.SimpleVocabulary(
                         (schema.vocabulary.SimpleTerm(
                                                     'sortable_title',
-                                                    title=_(u'Title'),
+                                                    title=PMF(u'Title'),
                                                     ),
                             schema.vocabulary.SimpleTerm(
                                                     'created',
-                                                    title=_(u'Creation Date'),
+                                                    title=PMF(u'Creation Date'),
                                                     ),
                             schema.vocabulary.SimpleTerm(
                                                     'modified',
-                                                    title=_(u'Modification Date'),
+                                                    title=PMF(u'Modification Date'),
                                                     ),
                         ),
                     ),

@@ -8,13 +8,13 @@ from zope.interface import implements, alsoProvides, Interface
 from zope.interface import Invalid
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope.site.hooks import getSite
-
+from collective.team import TeamMessageFactory as _
 
 class ITeam(form.Schema):
     
     form.widget(members=AutocompleteMultiFieldWidget)
     members = schema.List(
-        title=u"Members",
+        title=_(u"Members"),
         required=False,
         value_type=schema.Choice(
             vocabulary=u"plone.principalsource.Principals")
@@ -22,7 +22,7 @@ class ITeam(form.Schema):
     
     form.widget(managers=AutocompleteMultiFieldWidget)
     managers = schema.List(
-        title=u"Managers",
+        title=_(u"Managers"),
         required=False,
         value_type=schema.Choice(
             vocabulary=u"plone.principalsource.Principals")
