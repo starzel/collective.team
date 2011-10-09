@@ -2,20 +2,4 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="collective.team">
-
-  <browser:resourceDirectory
-      name="collective.team.images"
-      directory="images"
-      />
-
-  <browser:resourceDirectory
-      name="collective.team.js"
-      directory="js"
-      />
-
-  <browser:resourceDirectory
-      name="collective.team.css"
-      directory="css"
-      />
-  
 </configure>
