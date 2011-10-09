@@ -9,44 +9,6 @@ from zope.site.hooks import getSite
 
 from collective.team.behaviors.team import ITeam
 
-class JSONView(grok.View):
-    grok.context(ITeam)
-    grok.require('zope2.View')
-
-    def __call__(self):
-        if not hasattr(self, 'site'):
-            self.site = getSite()
-        results = self.site.portal_catalog(
-            path="/".join(self.context.getPhysicalPath()),
-            portal_type=("Folder", "team"),
-            sort_on="path")
-        ordered = {}
-        retval = []
-        for result in results:
-            path = result.getPath()
-            parent_path = '/'.join(path.split('/')[:-1])
-            title = result.Title
-            new_elem = dict(title=title,
-                             isFolder=True,
-                             href=result.getURL(),
-                             children=[],
-                             key=path)
-            if parent_path in ordered:
-                ordered[parent_path]['children'].append(new_elem)
-            else:
-                retval.append(new_elem)
-            ordered[path] = new_elem
-        return dumps(retval)
-
-    def strip_parents(self, results):
-        for result in results:
-            if result['children']:
-                self.strip_parents(result['children'])
-            result.pop('parent')
-
-    def render(self, *args, **kwargs):
-        pass
-
 class View(grok.View):
     grok.context(ITeam)
     grok.require('zope2.View')
@@ -84,6 +46,7 @@ class View(grok.View):
             sort_limit=3,)[:3]
         return next_events
 
+
     def team_members(self):
             sort_by_fullname = lambda x: x['username']
             admins = filter(lambda x:x, map(self.get_member_data, self.context.managers))
@@ -109,31 +72,3 @@ class View(grok.View):
             return member
         return dict(username=username, email=email, membertype=membertype)
 
-    def help(self):
-        help_docs = self.site.portal_catalog(
-            path='/dipf/wissen/intranet/special-interest-groups/hilfe',
-            portal_type=('Document', 'File', 'News Item'),
-            sort_limit=10,)[:10]
-        return help_docs
-        
-
-
-class AddFolder(grok.View):
-    grok.context(ITeam)
-    grok.require('zope2.View')
-
-    def __call__(self):
-        if not hasattr(self, 'normalizer'):
-            self.normalizer = getUtility(IIDNormalizer)
-        path = self.request.form['path']
-        title = self.request.form['title']
-        id = self.normalizer.normalize(title)
-        folder = self.context.restrictedTraverse(path)
-        folder.invokeFactory(id=id, type_name="Folder")
-        new_ob = folder[id]
-        new_ob.title = title
-        new_ob.reindexObject()
-        return ''
-
-    def render(self):
-        pass

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <object name="team" meta_type="Dexterity FTI"
-  i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+   i18n:domain="collective.team" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title">Team</property>
  <property name="description">A folder with local managers and members</property>
  <property name="icon_expr">string:${portal_url}/group.png</property>
