@@ -11,6 +11,10 @@
 
     <adapter factory=".mailnotify.MailNotifyActionExecutor" />
 
+    <include package="Products.CMFCore" file="permissions.zcml"
+      xmlns:zcml="http://namespaces.zope.org/zcml"
+      zcml:condition="have plone-41" />
+
     <browser:page
       for="plone.app.contentrules.browser.interfaces.IRuleActionAdding"
       name="plone.actions.MailNotifyAction"
