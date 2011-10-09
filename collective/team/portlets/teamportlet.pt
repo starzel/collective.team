@@ -6,8 +6,8 @@
 
   <tal:block tal:define="project view/current_project" 
              tal:condition="python:project">
-    <dt class="portletHeader"
-        tal:attributes="style string:background-color: ${project/project/color}">
+
+    <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         <h4 tal:content="project/project/pretty_title_or_id">
             Team Title
@@ -21,21 +21,21 @@
              tal:attributes="src string:${project/project/getURL}/jsonview;
                              context context/nearest_folder">
         </div>
-        <h4 class="my_projects"
-            tal:condition="view/projects">Meine SIGs</h4>
-        <ul class="my_projects"
-            tal:condition="view/projects">
-          <li tal:repeat="project view/projects">
-            <a href="#"
-               class="internal-link"
-               tal:attributes="href project/getURL;
-                               title project/Description">
-              <span tal:replace="project/pretty_title_or_id">
-                Title
-              </span>
-            </a>
-          </li>
-        </ul>
+        <tal:teams condition="view/get_teams_for_current_member">
+            <h4 class="my_teams" i18n:translate="">My teams</h4>
+            <ul class="my_teams">
+              <li tal:repeat="team view/get_teams_for_current_member">
+                <a href="#"
+                   class="internal-link"
+                   tal:attributes="href project/getURL;
+                                   title project/Description">
+                  <span tal:replace="project/pretty_title_or_id">
+                    Title
+                  </span>
+                </a>
+              </li>
+            </ul>
+        </tal:projects>
         <script type="text/javascript">
           jQuery(document).ready(function(){
           team.team_portlet_init();
@@ -43,6 +43,7 @@
         </script>
       </dd>
     </tal:show>
+
     <dd class="portletFooter">
       <span class="portletBottomLeft"></span>
       <span>
