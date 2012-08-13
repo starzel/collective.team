@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="collective_team_workflow"
+             title="collective.team workspace workflow"
+             state_variable="review_state"
+             initial_state="private"
+             xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+             i18n:domain="plone"
+             >
+
+ <permission>Access contents information</permission>
+ <permission>List folder contents</permission>
+ <permission>Modify portal content</permission>
+ <permission>View</permission>
+ <permission>Add portal content</permission>
+
+ <!-- states:
+    
+        - private (team only)
+        - visible (members can view)
+        - published (anonymous can view)
+ 
+    -->
+
+ <state state_id="private"
+        title="Private"
+        i18n:attributes="title">
+  <description>Visible only to team members.</description>
+  <exit-transition transition_id="show"/>
+  <exit-transition transition_id="publish"/>
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+  </permission-map>
+  <permission-map name="Add portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Contributor</permission-role>
+  </permission-map>
+ </state>
+ 
+ <state state_id="visible"
+        title="Public Draft"
+        i18n:attributes="title">
+  <description>Visible to other logged-in users.</description>
+  <exit-transition transition_id="hide"/>
+  <exit-transition transition_id="publish"/>
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Member</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Member</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Member</permission-role>
+  </permission-map>
+  <permission-map name="Add portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Contributor</permission-role>
+  </permission-map>
+ </state>
+ 
+ <state state_id="published"
+        title="Published"
+        i18n:attributes="title">
+  <description>Visible to everyone.</description>
+  <exit-transition transition_id="hide"/>
+  <exit-transition transition_id="retract"/>
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>Anonymous</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents"
+                  acquired="False">
+   <permission-role>Anonymous</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>Anonymous</permission-role>
+  </permission-map>
+  <permission-map name="Add portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Contributor</permission-role>
+  </permission-map>
+ </state>
+
+ <transition transition_id="hide"
+             title="Member make content private"
+             new_state="private" trigger="USER"
+             before_script="" after_script=""
+             i18n:attributes="title">
+  <description>Make this project and its contents visible only to team members.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=hide"
+    category="workflow"
+    i18n:translate="">Make private</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="show"
+             title="Member promotes content to public draft"
+             new_state="visible" trigger="USER"
+             before_script="" after_script=""
+             i18n:attributes="title">
+  <description>Makes this project visible to logged-in users.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=show"
+    category="workflow"
+    i18n:translate="">Promote to Draft</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="retract"
+             title="Retract"
+             new_state="visible" trigger="USER"
+             before_script="" after_script=""
+             i18n:attributes="title">
+  <description>Retract this item so that it is visible only to logged-in users.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=retract"
+    category="workflow"
+    i18n:translate="">Retract</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="publish"
+             title="Publish"
+             new_state="published" trigger="USER"
+             before_script="" after_script=""
+             i18n:attributes="title">
+  <description>Publish this project so that anyone can see it.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=publish"
+    category="workflow"
+    i18n:translate="">Publish</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+  </guard>
+ </transition>
+
+ <variable variable_id="action" for_catalog="False"
+           for_status="True" update_always="True">
+  <description>Previous transition</description>
+  <default>
+
+   <expression>transition/getId|nothing</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="actor" for_catalog="False"
+           for_status="True" update_always="True">
+  <description>The ID of the user who performed the last transition</description>
+  <default>
+
+   <expression>user/getUserName</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="comments" for_catalog="False"
+           for_status="True" update_always="True">
+  <description>Comment about the last transition</description>
+  <default>
+
+   <expression>python:state_change.kwargs.get('comment', '')</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="review_history" for_catalog="False"
+           for_status="False" update_always="False">
+  <description>Provides access to workflow history</description>
+  <default>
+
+   <expression>state_change/getHistory</expression>
+  </default>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </variable>
+ <variable variable_id="time" for_catalog="False"
+           for_status="True" update_always="True">
+  <description>When the previous transition was performed</description>
+  <default>
+
+   <expression>state_change/getDateTime</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+
+</dc-workflow>
