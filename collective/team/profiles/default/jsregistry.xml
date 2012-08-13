@@ -1,15 +1,7 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts">
  <javascript
-    id="++resource++collective.team.js/intranet.js"
+    id="++resource++collective.team/js/team.js"
     cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression=""  inline="False"
-    insert-after="++resource++collective.requirejs/require.js"/>
-    
-    <javascript
-        id="++resource++collective.team.js/jquery_corner.js"
-        cacheable="True" compression="safe" cookable="False" 
-        enabled="True" expression="" inline="False"
-        insert-after="++resource++collective.requirejs/require.js" />
-
+    enabled="True" expression=""  inline="False" />
 </object>

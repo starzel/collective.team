@@ -64,19 +64,19 @@ class TestHelpers(unittest.TestCase):
         original_get_factory_permission = handlers.get_factory_permission
         try:
             handlers.get_factory_permission = lambda a, b: ['view_permission']
-            project = Mock()
-            project.portal_types = Mock()
-            project.permission_settings = lambda x: [{'acquire' : True}]
-            project.rolesOfPermission = lambda x:[{'name' : 'Manager', 'selected' : True}]
+            team = Mock()
+            team.portal_types = Mock()
+            team.permission_settings = lambda x: [{'acquire' : True}]
+            team.rolesOfPermission = lambda x:[{'name' : 'Manager', 'selected' : True}]
             type_info = [Mock()]
-            project.portal_types.listTypeInfo = lambda: type_info
+            team.portal_types.listTypeInfo = lambda: type_info
             event = Mock()
-            handlers.enable_addable_types(project, event)
+            handlers.enable_addable_types(team, event)
             self.assertEquals([('manage_permission', (['view_permission'],
                                                       ['Manager',
                                                        'Editor',
                                                        'Reviewer'], True), {})],
-                              project.method_calls)
+                              team.method_calls)
         finally:
             handlers.get_factory_permission = original_get_factory_permission
 
@@ -85,15 +85,15 @@ class TestHelpers(unittest.TestCase):
         class Folder(dict):
             def invokeFactory(self, id, type_name):
                 return id
-        project = Folder()
-        project['bilder'] = Mock()
-        project['dokumente'] = Mock()
-        project['termine'] = Mock()
-        add_default_folders(project, None)
+        team = Folder()
+        team['bilder'] = Mock()
+        team['dokumente'] = Mock()
+        team['termine'] = Mock()
+        add_default_folders(team, None)
         self.assertEquals([('reindexObject', (), {})],
-                          project['bilder'].method_calls)
+                          team['bilder'].method_calls)
         self.assertEquals([('reindexObject', (), {})],
-                          project['dokumente'].method_calls)
+                          team['dokumente'].method_calls)
         self.assertEquals([('reindexObject', (), {})],
-                          project['termine'].method_calls)
+                          team['termine'].method_calls)
             

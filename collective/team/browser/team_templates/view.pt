@@ -7,24 +7,13 @@
       i18n:domain="example.conference">
 <body>
 
-<metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main"
-        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
+<metal:main fill-slot="content-core">
 
-        <div tal:replace="structure provider:plone.abovecontenttitle" />
-
-        <h1 class="documentFirstHeading" tal:content="context/title" />
-        
-        <div class="discreet">
-        </div>
-
-        <div tal:replace="structure provider:plone.belowcontenttitle" />
-        <div class="main_content">
           <div class="float_left portletPseudo">
-            <div class="pseudoPortletHeader">
+            <div class="portletHeader">
                 <h4>Neueste Dokumente</h4>
             </div>
-            <div class="pseudoPortletBody">
+            <div class="portletBody">
                 <p class="result"
                     tal:condition="not:view/latest_docs">
                     Noch keine Inhalte
@@ -46,11 +35,11 @@
                     <span class="documentByLine">zuletzt verändert: <span tal:replace="python:toLocalizedTime(obj.ModificationDate)" /></span>
                 </p>
             </div>
-            <div class="pseudoPortletFooter"></div>
+            <div class="portletFooter"></div>
           </div>
 
-          <div class="float_right portletPseudo">
-            <div class="pseudoPortletHeader">
+          <div class="float_right portlet portletPseudo">
+            <div class="portletHeader">
                 <h4>
                     <a href="#"
                         tal:attributes="href string:${context/absolute_url}/termine">
@@ -58,7 +47,7 @@
                     </a>
                 </h4>
             </div>
-            <div class="pseudoPortletBody">
+            <div class="portletBody">
                 <p class="result"
                     tal:condition="not:view/next_events">
                     Keine künftigen Termine                    
@@ -105,14 +94,7 @@
                     </tal:dates>                    
                 </p>
             </div>
-            <div class="pseudoPortletFooter">
-                <a href="#"
-                    tal:attributes="href string:${context/absolute_url}/termine/createObject?type_name=Event"
-                    tal:condition="python:checkPermission('Add portal content', context)"
-                    class="left">
-                    Termin eintragen</a>
-                <a href tal:attributes="href string:${context/absolute_url}/termine/"
-                    class="right">Zum Kalender</a>
+            <div class="portletFooter">
             </div>
           </div>
 
@@ -121,20 +103,20 @@
 
 
           <div class="float_left portletPseudo">
-            <div class="pseudoPortletHeader">
+            <div class="portletHeader">
                 <h4>Mitglieder</h4>
             </div>
-            <div class="pseudoPortletBody" tal:define="project view/project_members">
+            <div class="portletBody" tal:define="team view/team_members">
 
               <h4>Administratoren</h4>
               <ul>
-                <li class="result" tal:condition="not:project/admins">
+                <li class="result" tal:condition="not:team/admins">
                     <a href="mailto:redaktion@idea-frankfurt.eu">
                         <tal:block replace="structure context/portal_url/group.png"/>
                         IDeA-Redaktion
                     </a>
                 </li>
-                <li class="result" tal:repeat="doc project/admins">
+                <li class="result" tal:repeat="doc team/admins">
                   <a href="#"
                      tal:attributes="href python: 'mailto: ' + doc['email']"
                      tal:define="icon doc/membertype">
@@ -143,9 +125,9 @@
                   </a>
                 </li>
               </ul>
-              <h4 tal:condition="project/members">Mitglieder</h4>
+              <h4 tal:condition="team/members">Mitglieder</h4>
               <ul>
-                <li class="result" tal:repeat="doc project/members">
+                <li class="result" tal:repeat="doc team/members">
                   <a href="#"
                      tal:attributes="href python: 'mailto: ' + doc['email']"
                      tal:define="icon doc/membertype">
@@ -156,47 +138,13 @@
               </ul>
 
             </div>
-            <div class="pseudoPortletFooter"></div>
+            <div class="portletFooter"></div>
           </div>
 
-          <div class="float_right portletPseudo">
-            <div class="pseudoPortletHeader">
-                <h4>Hilfe</h4>
-            </div>
-            <div class="pseudoPortletBody">
-                <p class="result"
-                    tal:condition="not:view/help">
-                    Noch keine Hilfetexte                    
-                </p>
-                <p class="result" 
-                     tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                                 plone_view context/@@plone;
-                                 getIcon nocall:plone_view/getIcon;"
-                     tal:repeat="obj view/help">
-                    <a href="#" 
-                       tal:attributes="href string:${obj/getURL}/view;
-                                       title obj/Description;"
-                       tal:define="item_icon python:getIcon(obj);">
-                        <img tal:replace="structure item_icon/html_tag" />
-                        <tal:title content="obj/pretty_title_or_id">
-                            Title
-                        </tal:title>
-                    </a> 
-                </p>
-            </div>
-            <div class="pseudoPortletFooter"></div>
-          </div>
+
           <div style="clear:both;" ></div>
 
-        </div>
 
-
-
-        <div tal:replace="structure provider:plone.abovecontentbody" />
-
-        <div tal:replace="structure provider:plone.belowcontentbody" />
-
-    </tal:main-macro>
 </metal:main>
 
 </body>

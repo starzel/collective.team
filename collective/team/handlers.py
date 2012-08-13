@@ -2,7 +2,6 @@ from Acquisition import aq_base
 from zope.interface import implements
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
-from collective.team.behaviors.team import ITeam
 
 def _get_role_permission_for_fti(context, fti):
     """Helper method to get hold of a RolePermission for a given FTI.
@@ -42,7 +41,7 @@ def get_factory_permission(context, fti):
         return None
     return role_permission.__name__
 
-def updateIndexedSecurity(project, event):
+def updateIndexedSecurity(team, event):
     """
     Some properties are used for local roles. The catalog can find items
     independent of the current context, it is therefor impossible to tell
@@ -55,23 +54,23 @@ def updateIndexedSecurity(project, event):
     must be reindexed, at least the indexes that store security information.
     Thats what this event handler does.
     """
-    project.reindexObjectSecurity(skip_self = True)
+    team.reindexObjectSecurity(skip_self = True)
 
-def enable_addable_types(project, event):
+def enable_addable_types(team, event):
     """Give the given role the add permission on all the selected types.
     """
-    portal_types = getToolByName(project, 'portal_types')
+    portal_types = getToolByName(team, 'portal_types')
     relevant_roles = ['Editor', 'Reviewer']
 
     for fti in portal_types.listTypeInfo():
         type_id = fti.getId()
 
-        permission = get_factory_permission(project, fti)
+        permission = get_factory_permission(team, fti)
         if permission is not None:
-            roles = [r['name'] for r in project.rolesOfPermission(permission) if r['selected']]
-            acquire = bool(project.permission_settings(permission)[0]['acquire'])
+            roles = [r['name'] for r in team.rolesOfPermission(permission) if r['selected']]
+            acquire = bool(team.permission_settings(permission)[0]['acquire'])
             for role in relevant_roles:
                 if role not in roles:
                     roles.append(role)
-            project.manage_permission(permission, roles, acquire)
+            team.manage_permission(permission, roles, acquire)
 

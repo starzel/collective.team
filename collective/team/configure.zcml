@@ -9,13 +9,12 @@
   <five:registerPackage package="." initialize=".initialize" />
 
   <includeDependencies package="." />
-  <grok:grok package="." />  
 
   <include package=".browser" />
   <include package=".behaviors" />
-  <include package=".action" />
   <include package=".portlets" />
 
+  <grok:grok package="." />  
 
   <genericsetup:registerProfile
       name="default"
@@ -29,26 +28,10 @@
 
   <browser:page
       for="zope.component.interfaces.ISite"
-      name="within_team_not_manager"
-      class=".conditions.WithinTeamAreaAndNotManager"
-      permission="zope2.View"
-      />
-
-  <browser:page
-      for="zope.component.interfaces.ISite"
       name="within_team_area"
       class=".conditions.WithinTeamArea"
       permission="zope2.View"
       />
-
-<!--
-  <browser:page
-      for="zope.component.interfaces.ISite"
-      name="within_intranet"
-      class=".conditions.WithinIntranet"
-      permission="zope2.View"
-      />
--->
 
   <subscriber
       for=".behaviors.team.ITeam

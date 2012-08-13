@@ -2,7 +2,7 @@ import unittest2 as unittest
 from mock import Mock
         
 class TestStartPage(unittest.TestCase):
-    def test_projects(self):
+    def test_teams(self):
         from collective.team.browser import intranet
         context = Mock()
         folder_contents = [Mock()]
@@ -21,7 +21,7 @@ class TestStartPage(unittest.TestCase):
                             'admins': [{'username': 'a'}],
                             'members': [{'username': 'a'}],
                             'title': 'Title1'}],
-                          [x for x in view.projects])
+                          [x for x in view.teams])
 
     def test_get_member_data(self):
         from collective.team.browser import intranet

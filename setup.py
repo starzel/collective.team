@@ -41,7 +41,6 @@ setup(name='collective.team',
         'plone.principalsource',
         'rwproperty',
         'zope.interface',
-        'zope.site',
         'z3c.autoinclude',
         ],
       extras_require = {

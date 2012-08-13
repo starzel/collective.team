@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <object name="team" meta_type="Dexterity FTI"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+   i18n:domain="collective.team" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title">Team</property>
- <property name="description">None</property>
- <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
+ <property name="description">A folder with local managers and members</property>
+ <property name="icon_expr">string:${portal_url}/group.png</property>
  <property name="factory">team</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
@@ -14,6 +14,11 @@
  <property name="default_view">view</property>
  <property name="view_methods">
   <element value="view"/>
+  <element value="folder_summary_view"/>
+  <element value="folder_full_view"/>
+  <element value="folder_tabular_view"/>
+  <element value="atct_album_view"/>
+  <element value="folder_listing"/>
  </property>
  <property name="default_view_fallback">False</property>
  <property name="add_permission">cmf.AddPortalContent</property>

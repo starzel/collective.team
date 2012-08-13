@@ -1,0 +1,63 @@
+#content .float_left {
+    float:left;
+}
+
+#content .float_right {
+    float:right;
+    clear:right;
+}
+
+#content .result p {
+    padding-bottom: 0;
+}
+
+#content .result img {
+    vertical-align: text-top
+}
+
+#content .result .documentByLine {
+    display: block;
+}
+
+#send_document{
+    border-width: 1px;
+    border-style: solid;
+    padding: 0.6em;
+    margin: 0.6em;
+}
+
+/*
+ * Pseudo-Portlets
+ */
+
+.portletPseudo  {
+    width: 40%;
+    margin: 0px 0px 10px 1px;
+    padding: 0;
+}
+
+
+.portletPseudo p {
+    padding-bottom: 0px;
+}
+
+.portletPseudo .teamDescription {
+    color: #666;
+    padding-bottom: 1em;
+}
+
+
+/*
+ * Team Portlet
+ */
+
+h4.my_projects {
+    padding-top: 1em;
+    font-size: 100%;
+    font-weight: bold;
+    color: #666;
+}
+
+ul.my_projects li {
+    padding-bottom: 0.5em;
+}

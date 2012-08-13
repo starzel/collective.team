@@ -4,45 +4,88 @@
                 toLocalizedTime nocall:plone_view/toLocalizedTime;
                 getIcon nocall:plone_view/getIcon;">
 
-  <tal:block tal:define="project view/current_project" 
-             tal:condition="python:project">
-    <dt class="portletHeader"
-        tal:attributes="style string:background-color: ${project/project/color}">
+  <tal:block tal:define="current_team view/current_team">
+
+    <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <h4 tal:content="project/project/pretty_title_or_id">
+        <h4 tal:condition="current_team"
+            tal:content="current_team/title">
             Team Title
+        </h4>
+        <h4 tal:condition="not:current_team"
+            i18n:translate="">
+            My Teams
         </h4>
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:show tal:define="is_member_or_admin view/is_member_or_admin">
-      <dd class="portletItem" >
-        <div class="dynatree" id="dynatree_portlet" src="#" context="#"
-             tal:attributes="src string:${project/project/getURL}/jsonview;
-                             context context/nearest_folder">
-        </div>
-        <h4 class="my_projects"
-            tal:condition="view/projects">Meine SIGs</h4>
-        <ul class="my_projects"
-            tal:condition="view/projects">
-          <li tal:repeat="project view/projects">
+    <dd class="portletItem" 
+        tal:condition="current_team">
+      <tal:members tal:define="members current_team/members;
+                admins current_team/admins">
+
+      <h4 tal:condition="admins"
+          i18n:translate="">
+          Administrators
+      </h4>
+      <ul>
+        <li class="result" tal:repeat="admin admins">
+          <a href="#"
+             tal:attributes="href python: 'mailto: ' + admin['email']"
+             tal:define="icon admin/membertype"
+             tal:condition="admin/email">
+              <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+              <span omit-tag=""  tal:content="admin/username"></span>
+          </a>
+          <span tal:define="icon admin/membertype"
+             tal:condition="not: admin/email">
+              <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+              <span omit-tag=""  tal:content="admin/username"></span>
+          </span>
+        </li>
+      </ul>
+      <h4 tal:condition="members"
+          i18n:translate="">
+          Members
+      </h4>
+      <ul>
+        <li class="result" tal:repeat="member members">
+          <a href="#"
+             tal:attributes="href python: 'mailto: ' + member['email']"
+             tal:define="icon member/membertype"
+             tal:condition="member/email">
+              <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+              <span omit-tag=""  tal:content="member/username"></span>
+          </a>
+          <span tal:define="icon member/membertype"
+             tal:condition="not: member/email">
+              <tal:block replace="structure python:path('context/portal_url/%s.png' % icon)"/>
+              <span omit-tag=""  tal:content="member/username"></span>
+          </span>
+        </li>
+      </ul>
+      </tal:members>
+    </dd>
+    
+    <dd class="portletItem" 
+        tal:condition="view/get_teams_for_current_member">
+        <h4 class="my_teams" 
+            i18n:translate="" 
+            tal:condition="current_team">My Teams</h4>
+        <ul class="my_teams">
+          <li tal:repeat="team view/get_teams_for_current_member">
             <a href="#"
                class="internal-link"
-               tal:attributes="href project/getURL;
-                               title project/Description">
-              <span tal:replace="project/pretty_title_or_id">
+               tal:attributes="href team/getURL;
+                               title team/Description">
+              <span tal:replace="team/pretty_title_or_id">
                 Title
               </span>
             </a>
           </li>
         </ul>
-        <script type="text/javascript">
-          jQuery(document).ready(function(){
-          idea.team_portlet_init();
-          });
-        </script>
-      </dd>
-    </tal:show>
+    </dd>
+
     <dd class="portletFooter">
       <span class="portletBottomLeft"></span>
       <span>

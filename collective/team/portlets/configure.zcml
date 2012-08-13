@@ -5,27 +5,23 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="collective.team">
 
-    <five:registerPackage package="." initialize=".initialize" />
+    <plone:portlet
+        name="collective.team.portlets.TeamPortlet"
+        interface=".teamportlet.ITeamPortlet"
+        assignment=".teamportlet.Assignment"
+        view_permission="zope2.View"
+        edit_permission="plone.app.portlets.ManagePortlets"
+        renderer=".teamportlet.Renderer"
+        addview=".teamportlet.AddForm"
+        editview=".teamportlet.EditForm"
+        />
 
-     <!-- Register the portlet -->
-
-     <plone:portlet
-         name="collective.team.portlets.TeamPortlet"
-         interface=".teamportlet.ITeamPortlet"
-         assignment=".teamportlet.Assignment"
-         view_permission="zope2.View"
-         edit_permission="cmf.ManagePortal"
-         renderer=".teamportlet.Renderer"
-         addview=".teamportlet.AddForm"
-         editview=".teamportlet.EditForm"
-         />
-
-    <adapter factory='.indexes.getProjectMembers'
-     name='getProjectMembers'
-    />
+    <adapter factory='.indexes.getTeamMembers'
+        name='getTeamMembers'
+        />
     
-    <adapter factory='.indexes.getProjectManagers'
-     name='getProjectManagers'
-    />
+    <adapter factory='.indexes.getTeamManagers'
+        name='getTeamManagers'
+        />
     
 </configure>
