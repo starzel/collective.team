@@ -38,7 +38,6 @@ class View(grok.View):
         if self.context.subject:
             subject = self.context.subject[0]
         next_events = self.site.portal_catalog(
-            Subject = subject,
             sort_on='start',
             portal_type='Event',
             end={'query': DateTime(),

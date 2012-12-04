@@ -7,7 +7,8 @@
       i18n:domain="example.conference">
 <body>
 
-<metal:main fill-slot="content-core">
+<metal:main fill-slot="content-core"
+    tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
 
           <div class="float_left portletPseudo">
             <div class="portletHeader">
@@ -18,12 +19,11 @@
                     tal:condition="not:view/latest_docs">
                     Noch keine Inhalte
                 </p>
-                <p class="result" 
-                     tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                                 plone_view context/@@plone;
+                <p class="result"
+                     tal:define="plone_view context/@@plone;
                                  getIcon nocall:plone_view/getIcon;"
                      tal:repeat="obj view/latest_docs">
-                    <a href="#" 
+                    <a href="#"
                        tal:attributes="href string:${obj/getURL}/view;
                                        title obj/Description;"
                        tal:define="item_icon python:getIcon(obj);">
@@ -31,7 +31,7 @@
                         <tal:title content="obj/pretty_title_or_id">
                             Title
                         </tal:title>
-                    </a> 
+                    </a>
                     <span class="documentByLine">zuletzt verändert: <span tal:replace="python:toLocalizedTime(obj.ModificationDate)" /></span>
                 </p>
             </div>
@@ -50,9 +50,9 @@
             <div class="portletBody">
                 <p class="result"
                     tal:condition="not:view/next_events">
-                    Keine künftigen Termine                    
+                    Keine künftigen Termine
                 </p>
-                <p class="result" 
+                <p class="result"
                      tal:define="plone_view context/@@plone;
                                  getIcon nocall:plone_view/getIcon;"
                      tal:repeat="obj view/next_events">
@@ -62,7 +62,7 @@
                                    item_endtime python:toLocalizedTime(obj.end,time_only=1);
                                    item_sametime python: obj.start == obj.end;
                                    item_samedate python: obj.end - obj.start &lt; 1">
-                        <a href="#" 
+                        <a href="#"
                            tal:attributes="href string:${obj/getURL}/view;
                                            title obj/Description;"
                            tal:define="item_icon python:getIcon(obj);">
@@ -70,7 +70,7 @@
                             <tal:title content="obj/pretty_title_or_id">
                                 Title
                             </tal:title>
-                        </a> 
+                        </a>
                         <span class="documentByLine">
                             <span
                              tal:condition="python: item_sametime"
@@ -91,7 +91,7 @@
                                 <tal:location content="obj/location">Location</tal:location>
                             </span>
                         </span>
-                    </tal:dates>                    
+                    </tal:dates>
                 </p>
             </div>
             <div class="portletFooter">
